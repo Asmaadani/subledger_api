@@ -31,9 +31,9 @@ const userSchema = new mongoose.Schema({
 
 // Hash du mot de passe avant sauvegarde
 userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
-    
     try {
+        if (!this.isModified('password')) return next();
+        
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
         next();
@@ -42,9 +42,13 @@ userSchema.pre('save', async function(next) {
     }
 });
 
-// Méthode pour comparer les mots de passe
+// Méthode pour comparer les mots de passe - CORRECTION
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+    try {
+        return await bcrypt.compare(candidatePassword, this.password);
+    } catch (error) {
+        throw new Error('Erreur lors de la comparaison des mots de passe');
+    }
 };
 
 module.exports = mongoose.model('User', userSchema);
