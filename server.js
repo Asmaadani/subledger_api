@@ -12,13 +12,11 @@ app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
 // Routes
-
 console.log('Chargement des routes...');
 app.use('/api/auth', require('./routes/authRoutes'));
 console.log('authRoutes chargé');
 
 
-// app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
