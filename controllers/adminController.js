@@ -6,7 +6,7 @@ const Subscription = require('../models/Subscription');
 // @access  Private/Admin
 const getAllUsers = async (req, res, next) => { 
     try {
-        const users = await User.find().select('-password');
+        const users = await User.find().select('-password');    // EXCLUT LE MDP walaw ikoun hashé=>password n'existe PAS dans la réponse
         res.json({ users });
     } catch (error) {
         next(error);  
@@ -29,7 +29,9 @@ const getStats = async (req, res, next) => {
             stats: {
                 totalUsers,
                 totalSubscriptions,
-                totalMonthlyRevenue: totalMonthlyRevenue[0]?.total || 0
+                totalMonthlyRevenue: totalMonthlyRevenue[0]?.total || 0   // Si totalMonthlyRevenue[0] existe, prend .total
+                                                                        // Si totalMonthlyRevenue[0] est undefined, retourne undefined
+                                                                        // 0=>pas d'erreur
             }
         });
     } catch (error) {

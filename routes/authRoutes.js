@@ -4,6 +4,8 @@ const { register, login, getProfile } = require('../controllers/authController')
 const { validate, registerSchema, loginSchema } = require('../validation/schemas');
 const { protect } = require('../middleware/auth');
 
+console.log('authRoutes chargé');
+
 router.post('/register', validate(registerSchema), register);
 router.post('/login', validate(loginSchema), login);
 router.get('/profile', protect, getProfile);

@@ -41,8 +41,8 @@ const getSubscriptions = async (req, res, next) => {
 const getSubscriptionById = async (req, res, next) => {  
     try {
         const subscription = await Subscription.findOne({
-            _id: req.params.id,
-            userId: req.user._id
+            _id: req.params.id,       // L'ID de l'abonnement demandé 0 PARTIR DE URI
+            userId: req.user._id        // L'ID de l'utilisateur connecté
         });
 
         if (!subscription) {

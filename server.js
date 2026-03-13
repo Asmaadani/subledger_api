@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const { errorHandler } = require('./utils/errorHandler');
 
 connectDB();
 const app = express();
@@ -10,10 +9,16 @@ const app = express();
 // Middleware de base
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 // Routes
+
+console.log('Chargement des routes...');
 app.use('/api/auth', require('./routes/authRoutes'));
+console.log('authRoutes chargé');
+
+
+// app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
@@ -27,10 +32,13 @@ app.use((req, res) => {
     res.status(404).json({ message: 'Route non trouvée' });
 });
 
-// Error handler - TOUJOURS EN DERNIER
-app.use(errorHandler);
+
+app.use((err, req, res, next) => {
+    console.error('Erreur:', err);
+    res.status(500).json({ message: err.message });
+});
 
 const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
-    console.log(`✅ Serveur démarré sur le port ${PORT}`);
+    console.log(`Serveur démarré sur le port ${PORT}`);
 });

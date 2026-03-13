@@ -53,17 +53,17 @@ const subscriptionSchema = Joi.object({
 // Middleware de validation
 const validate = (schema) => {
     return (req, res, next) => {
-        const { error } = schema.validate(req.body, { abortEarly: false });
+        const { error } = schema.validate(req.body, { abortEarly: false });    //pour vérifie req.body selon les règles
+        //  { abortEarly: false } = montre TOUTES les erreurs, pas seulement la première
         
         if (error) {
-            const errors = error.details.map(detail => detail.message);
+            const errors = error.details.map(detail => detail.message);     //entre dans tableau d'objet d'erreur et montre chaqu'un avec son msg 
             return res.status(400).json({ 
                 message: 'Erreur de validation',
                 errors 
             });
         }
-        
-        next();
+        next();             //Si pas d'erreur, passe au prochain middleware (le controller)
     };
 };
 
